@@ -50,7 +50,8 @@ const instructors = [
 async function run() {
   await connectDB();
   await Instructor.deleteMany({});
-  const created = await Instructor.insertMany(instructors);
+  // create() (not insertMany) so the model pre('save') hook hashes passwords.
+  const created = await Instructor.create(instructors);
   console.log(`Seeded ${created.length} instructor(s):`);
   for (const i of created) {
     console.log(`  - ${i.username} (${i.role})`);
